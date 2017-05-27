@@ -1,0 +1,179 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>Lista de Formas de Pagamento</title>
+</h:head>
+<h:body>
+	<h:form id="form">
+		<p:growl id="msgs" showDetail="true" />
+
+		<div align="right">
+			<h:commandLink>
+				<p:graphicImage value="/publico/imagens/excel.png" width="24" />
+				<p:dataExporter type="xls" target="tbl" fileName="p" />
+			</h:commandLink>
+
+			<h:commandLink>
+				<p:graphicImage value="/publico/imagens/pdf.png" width="24" />
+				<p:dataExporter type="pdf" target="tbl" fileName="p" />
+			</h:commandLink>
+
+			<h:commandLink>
+				<p:graphicImage value="/publico/imagens/csv.png" width="24" />
+				<p:dataExporter type="csv" target="tbl" fileName="p" />
+			</h:commandLink>
+
+			<h:commandLink>
+				<p:graphicImage value="/publico/imagens/xml.png" width="24" />
+				<p:dataExporter type="xml" target="tbl" fileName="p" />
+			</h:commandLink>
+		</div>
+
+		<p:dataTable id="tbl" var="p" value="#{pessoaCtrl.listagem1}"
+			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+			paginator="true" rows="10" style="margin-bottom:20px">
+			
+			<f:facet name="header">
+			
+				<h:outputLabel value="Lista de Clientes" />
+				<p:commandButton value="Inserir" icon="icon-novo"
+					actionListener="#{pessoaCtrl.actionInserir}"
+					oncomplete="PF('cadDialog').show()" update=":form:cadDetail">
+				</p:commandButton>
+			</f:facet>
+
+			<p:column headerText="Código" sortBy="p.id">
+				<h:outputText value="#{p.id}" />
+			</p:column>
+			<p:column headerText="Nome" sortBy="p.nome">
+				<h:outputText value="#{p.nome}" />
+			</p:column>
+			<p:column headerText="CPF" sortBy="p.cpf">
+				<h:outputText value="#{p.cpf}" />
+			</p:column>
+			<p:column headerText="RG" sortBy="p.rg">
+				<h:outputText value="#{p.rg}" />
+			</p:column>
+			<p:column headerText="Data Nascimento" sortBy="p.dataNasc">
+				<h:outputText value="#{p.dataNasc}">
+					<f:convertDateTime dateStyle="default" timeZone="America/Sao_Paulo" />
+				</h:outputText>
+			</p:column>
+			<p:column headerText="Rua" sortBy="p.rua">
+				<h:outputText value="#{p.rua}" />
+			</p:column>
+			<p:column headerText="Bairro" sortBy="p.bairro">
+				<h:outputText value="#{p.bairro}" />
+			</p:column>
+			<p:column headerText="UF" sortBy="p.uf">
+				<h:outputText value="#{p.uf}" />
+			</p:column>
+			<p:column headerText="Cidade" sortBy="p.cidade">
+				<h:outputText value="#{p.cidade}" />
+			</p:column>
+			<p:column headerText="CEP" sortBy="p.cep">
+				<h:outputText value="#{p.cep}" />
+			</p:column>
+			<p:column headerText="E-mail" sortBy="p.email">
+				<h:outputText value="#{p.email}" />
+			</p:column>
+			<p:column headerText="Senha" sortBy="p.senha">
+				<h:outputText value="#{p.senha}" />
+			</p:column>
+			<p:column headerText="Tipo" sortBy="p.tipo">
+				<h:outputText value="#{p.tipo}" />
+			</p:column>
+
+			<p:column style="width:32px;text-align: center">
+				<p:commandButton update=":form:cadDetail"
+					oncomplete="PF('cadDialog').show()" icon="ui-icon-search"
+					title="View">
+					<f:setPropertyActionListener value="#{p}"
+						target="#{pessoaCtrl.pessoa}"></f:setPropertyActionListener>
+				</p:commandButton>
+			</p:column>
+		</p:dataTable>
+
+		<p:dialog header="Cadastro de Clientes" widgetVar="cadDialog"
+			modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+			<p:outputPanel id="cadDetail" style="text-align:center;">
+				<h:panelGrid columns="2" style="text-align:left">
+				
+					<h:outputLabel value="Código" />
+					<p:inputText value="#{pessoaCtrl.pessoa.id}" size="6"
+						maxlength="10" readonly="true" />
+						
+					<h:outputLabel value="Nome" />
+					<p:inputText value="#{pessoaCtrl.pessoa.nome}" />
+					<h:outputLabel value="CPF" />
+					<p:inputText value="#{pessoaCtrl.pessoa.cpf}" size="6"
+						maxlength="14" />
+					<h:outputLabel value="RG" />
+					<p:inputText value="#{pessoaCtrl.pessoa.rg}" size="6"
+						maxlength="14" />
+					<h:outputLabel value="Data Nascimento" />
+					<p:inputText value="#{pessoaCtrl.pessoa.dataNasc}" size="6"
+						maxlength="10">
+						<f:convertDateTime type="date" pattern="dd/mm/yyyy"
+							timeZone="America/Sao_Paulo" />
+					</p:inputText>
+					<h:outputLabel value="Rua" />
+					<p:inputText value="#{pessoaCtrl.pessoa.rua}" size="6"
+						maxlength="80" />
+					<h:outputLabel value="Bairro" />
+					<p:inputText value="#{pessoaCtrl.pessoa.bairro}" size="6"
+						maxlength="30" />
+
+
+					<p:outputLabel value="UF" />
+					<p:selectOneMenu filter="true" value="#{pessoaCtrl.end_Estado}"
+						converter="omnifaces.SelectItemsConverter">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione um Estado" />
+						<f:selectItems value="#{pessoaCtrl.end_Estados}" var="estado"
+							itemValue="#{estado}"
+							itemLabel="#{estado.sigla} - #{estado.nome}" />
+						<p:ajax listener="#{pessoaCtrl.popularCidade}"
+							update=":form:cidade" />
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Cidade" />
+					<p:selectOneMenu filter="true" id="cidade" value="#{pessoaCtrl.cidade}"
+						converter="omnifaces.SelectItemsConverter">
+						<f:selectItem itemValue="" itemLabel="Selecione a Cidade" />
+						<f:selectItems value="#{pessoaCtrl.cidades}" var="cidade"
+							itemValue="#{cidade}" itemLabel="#{cidade.nome}" />
+					</p:selectOneMenu>
+
+					<h:outputLabel value="CEP" />
+					<p:inputText value="#{pessoaCtrl.pessoa.cep}" size="6"
+						maxlength="9" />
+					<h:outputLabel value="E-mail" />
+					<p:inputText value="#{pessoaCtrl.pessoa.email}" size="6"
+						maxlength="60" />
+					<h:outputLabel value="Senha" />
+					<p:inputText value="#{pessoaCtrl.pessoa.senha}" size="6"
+						maxlength="60" />
+					<h:outputLabel value="Tipo" />
+					<p:inputText value="#{pessoaCtrl.pessoa.tipo}" size="6"
+						maxlength="60" />
+
+				</h:panelGrid>
+				<h:commandButton value="Excluir"
+					action="#{pessoaCtrl.actionExcluir}" update="growl"></h:commandButton>
+				<h:commandButton value="Gravar" action="#{pessoaCtrl.actionGravar}"
+					update="growl"></h:commandButton>
+				<h:commandButton value="Cancelar" oncomplete="cadDialog.hide()"></h:commandButton>
+			</p:outputPanel>
+		</p:dialog>
+		<p:commandButton value="Inicio" action="/index.xhtml"></p:commandButton>
+	</h:form>
+</h:body>
+</html>
